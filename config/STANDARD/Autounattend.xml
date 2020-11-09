@@ -72,6 +72,7 @@
                     <WillReboot>Always</WillReboot>
                 </RunSynchronousCommand>
             </RunSynchronous>
+            <TimeZone>GMT Standard Time</TimeZone>
         </component>
     </settings>
     
@@ -111,7 +112,6 @@
             <OOBE>
                 <ProtectYourPC>3</ProtectYourPC>
             </OOBE>
-            <TimeZone>GMT Standard Time</TimeZone>
             <UserAccounts>
                 <AdministratorPassword>
                     <Value>REPLACEWITHWINDOWSPASSWORD</Value>
