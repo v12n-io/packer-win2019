@@ -124,6 +124,8 @@
             "scripts": [
                                     "./scripts/03-systemsettings.ps1",
                                     "./scripts/04-tlsconfig.ps1",
+                                    "./scripts/60-openssh.ps1",
+                                    "./scripts/80-ansible.ps1",
                                     "./scripts/95-enablerdp.ps1"
             ]
         },
