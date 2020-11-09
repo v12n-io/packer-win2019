@@ -111,7 +111,7 @@
                                     "[] /vmimages/tools-isoimages/windows.iso"
             ],
             "floppy_files": [
-                                    "./config/STANDARD/Autounattend.xml",
+                                    "./config/STANDARDCORE/Autounattend.xml",
                                     "./scripts/00-vmtools64.cmd",
                                     "./scripts/01-initialise.ps1"
             ]
