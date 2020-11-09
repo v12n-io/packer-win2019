@@ -121,6 +121,8 @@
     "provisioners": [
         {
             "type":                 "powershell",
+            "elevated_user":        "{{user `var_guest_username`}}",
+            "elevated_password":    "{{user `var_guest_password`}}",
             "scripts": [
                                     "./scripts/03-systemsettings.ps1",
                                     "./scripts/04-tlsconfig.ps1",
