@@ -61,6 +61,7 @@
                                     "{{user `var_vsphere_iso_ds`}} {{user `var_iso_path`}}/{{user `var_iso_file`}}",
                                     "[] /vmimages/tools-isoimages/windows.iso"
             ],
+            "shutdown_command":     "shutdown /s /t 10 /f /d p:4:1 /c Packer_Provisioning_Shutdown",
             "floppy_files": [
                                     "./config/STANDARD/Autounattend.xml",
                                     "./scripts/00-vmtools64.cmd",
@@ -110,6 +111,7 @@
                                     "{{user `var_vsphere_iso_ds`}} {{user `var_iso_path`}}/{{user `var_iso_file`}}",
                                     "[] /vmimages/tools-isoimages/windows.iso"
             ],
+            "shutdown_command":     "shutdown /s /t 10 /f /d p:4:1 /c Packer_Provisioning_Shutdown",
             "floppy_files": [
                                     "./config/STANDARDCORE/Autounattend.xml",
                                     "./scripts/00-vmtools64.cmd",
