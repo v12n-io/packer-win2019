@@ -36,7 +36,7 @@
     
             "vm_name":              "win2019std-{{user `var_build_version`}}",
             "guest_os_type":        "windows9Server64Guest",
-            "CPUs":                 1,
+            "CPUs":                 2,
             "RAM":                  4096,
             "disk_controller_type": "pvscsi",
             "storage": [
@@ -86,7 +86,7 @@
     
             "vm_name":              "win2019stdcore-{{user `var_build_version`}}",
             "guest_os_type":        "windows9Server64Guest",
-            "CPUs":                 1,
+            "CPUs":                 2,
             "RAM":                  4096,
             "disk_controller_type": "pvscsi",
             "storage": [
