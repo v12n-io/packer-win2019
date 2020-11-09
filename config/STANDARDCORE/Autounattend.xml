@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend">
     <settings pass="windowsPE">
-        <component name="Microsoft-Windows-PnpCustomizationsWinPE" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" processorArchitecture="amd64" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-            <DriverPaths>
-                <PathAndCredentials wcm:action="add" wcm:keyValue="A">
-                    <Path>E:\Program Files\VMware\VMware Tools\Drivers\pvscsi\Win8\amd64</Path>
-                </PathAndCredentials>
-            </DriverPaths>
-        </component>
         <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <SetupUILanguage>
                 <UILanguage>en-US</UILanguage>
@@ -16,6 +9,14 @@
             <SystemLocale>en-US</SystemLocale>
             <UILanguage>en-US</UILanguage>
             <UserLocale>en-GB</UserLocale>
+        </component>
+        <component name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <DriverPaths>
+                <PathAndCredentials wcm:action="add" wcm:keyValue="A">
+                    <!-- pvscsi-Windows8.flp -->
+                    <Path>E:\Program Files\VMware\VMware Tools\Drivers\pvscsi\Win8\amd64</Path>
+                </PathAndCredentials>
+            </DriverPaths>
         </component>
         <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DiskConfiguration>
@@ -38,13 +39,12 @@
                             <Value>Windows Server 2019 SERVERSTANDARDCORE</Value>
                         </MetaData>
                     </InstallFrom>
-                    <WillShowUI>OnError</WillShowUI>
                     <InstallToAvailablePartition>true</InstallToAvailablePartition>
                 </OSImage>
             </ImageInstall>
             <UserData>
                 <ProductKey>
-                    <Key>REPLACEWITHLICENSEKEY</Key>
+                    <Key>REPLACEWITHWIN2019STDLIC</Key>
                     <WillShowUI>OnError</WillShowUI>
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>
@@ -61,64 +61,62 @@
         </component>
     </settings>
 
-
     <settings pass="specialize">
-        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <RunSynchronous>
                 <RunSynchronousCommand wcm:action="add">
                     <Order>1</Order>
                     <!-- Install VMware Tools from windows.iso -->
-                    <Path>a:\00-vmtools64.cmd</Path>
+                    <Path>a:\00-vmtools.cmd</Path>
                     <WillReboot>Always</WillReboot>
                 </RunSynchronousCommand>
             </RunSynchronous>
         </component>
     </settings>
-    
+
     <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <SystemLocale>en-GB</SystemLocale>
+        </component>
+
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <OOBE>
+                <!-- Privacy settings -->
+                <ProtectYourPC>3</ProtectYourPC>
+            </OOBE>
+            
+            <TimeZone>W. Europe Standard Time</TimeZone>
+            
+            <UserAccounts>
+                 <AdministratorPassword>
+                     <Value>REPLACEWITHWINDOWSPASSWORD</Value>
+                     <PlainText>true</PlainText>
+                 </AdministratorPassword>
+            </UserAccounts>
+
             <AutoLogon>
+                <Enabled>true</Enabled>
+                <Username>Administrator</Username>
                 <Password>
                     <Value>REPLACEWITHWINDOWSPASSWORD</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <LogonCount>1</LogonCount>
-                <Username>Administrator</Username>
-                <Enabled>true</Enabled>
             </AutoLogon>
             <FirstLogonCommands>
-                <!-- Set PS executeion policy -->
                 <SynchronousCommand wcm:action="add">
                     <Order>1</Order>
-                    <Description>Set Execution Policy 64 Bit</Description>
-                    <CommandLine>cmd.exe /c powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force"</CommandLine>
+                    <!-- Enable WinRM service -->
+                    <CommandLine>powershell -ExecutionPolicy Bypass -File a:\01-initialise.ps1</CommandLine>
                     <RequiresUserInput>true</RequiresUserInput>
-                </SynchronousCommand>
-                <!-- Set PS executeion policy -->
+                </SynchronousCommand>  
                 <SynchronousCommand wcm:action="add">
                     <Order>2</Order>
-                    <Description>Set Execution Policy 32 Bit</Description>
-                    <CommandLine>C:\Windows\SysWOW64\cmd.exe /c powershell -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force"</CommandLine>
+                    <!-- Change PowerShell Execution Policy -->
+                    <CommandLine>cmd /c reg add "HKLM\SOFTWARE\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell" /v ExecutionPolicy /t REG_SZ /d Unrestricted /f</CommandLine>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
-                <!-- Execute initial setup, including enabling WinRM -->
-                <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\01-initialise.ps1</CommandLine>
-                    <Description>Basic configuration</Description>
-                    <Order>99</Order>
-                </SynchronousCommand>
-            </FirstLogonCommands>
-            <OOBE>
-                <ProtectYourPC>3</ProtectYourPC>
-            </OOBE>
-            <TimeZone>GMT Standard Time</TimeZone>
-            <UserAccounts>
-                <AdministratorPassword>
-                    <Value>REPLACEWITHWINDOWSPASSWORD</Value>
-                    <PlainText>true</PlainText>
-                </AdministratorPassword>
-            </UserAccounts>
+              </FirstLogonCommands>
         </component>
     </settings>
-    <cpi:offlineImage cpi:source="wim:c:/wim/install.wim#Windows Server 2019 SERVERSTANDARDCORE" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>
