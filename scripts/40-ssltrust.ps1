@@ -9,9 +9,6 @@ $url = "http://" + $webserver
 $certRoot = "rootca.cer"
 $certIssuing = "issuingca.cer"
 
-# Verify connectivity
-Test-Connection $webserver -Count 1
-
 # Get certificates
 ForEach ($cert in $certRoot,$certIssuing) {
   Invoke-WebRequest -Uri ($url + "/" + $cert) -OutFile C:\$cert
