@@ -12,4 +12,3 @@ Add-Type -AssemblyName 'System.Web'
 # Create the user
 $secureString = ConvertTo-SecureString $pass -AsPlainText -Force
 New-LocalUser -Name $user -Password $secureString
-$credential = New-Object System.Management.Automation.PsCredential($ansibleUser,$secureString)
