@@ -63,57 +63,7 @@
             ],
             "shutdown_command":     "shutdown /s /t 10 /f /d p:4:1 /c Packer_Provisioning_Shutdown",
             "floppy_files": [
-                                    "./config/STANDARD/Autounattend.xml",
-                                    "./scripts/00-vmtools64.cmd",
-                                    "./scripts/01-initialise.ps1"
-            ]
-        },
-
-        {
-            "type":                 "vsphere-iso",
-            "name":                 "win2019-STDCORE",
-    
-            "vcenter_server":       "{{user `var_vsphere_vcenter`}}",
-            "username":             "{{user `var_vsphere_username`}}",
-            "password":             "{{user `var_vsphere_password`}}",
-            "insecure_connection":  true,
-    
-            "datacenter":           "{{user `var_vsphere_datacenter`}}",
-            "cluster":              "{{user `var_vsphere_cluster`}}",
-            "folder":               "{{user `var_vsphere_folder`}}",
-            "datastore":            "{{user `var_vsphere_datastore`}}",
-            "convert_to_template":  true,
-    
-            "vm_name":              "wc2019std-{{user `var_build_version`}}",
-            "guest_os_type":        "windows9Server64Guest",
-            "CPUs":                 2,
-            "RAM":                  4096,
-            "disk_controller_type": "pvscsi",
-            "storage": [
-                {
-                    "disk_size":    51200,
-                    "disk_thin_provisioned": true
-                }
-            ],
-            "network_adapters": [
-                {
-                    "network":      "{{user `var_vsphere_network`}}",
-                    "network_card": "vmxnet3"
-                }
-            ],
-            "notes":                "VER: {{user `var_build_version`}}\nSRC: {{user `var_build_repo`}} ({{user `var_build_branch`}})\nOS: Windows 2019 STDCORE\nISO: {{user `var_iso_file`}}",
-    
-            "communicator":         "winrm",
-            "winrm_username":       "{{user `var_guest_username`}}",
-            "winrm_password":       "{{user `var_guest_password`}}",
-    
-            "iso_paths": [
-                                    "{{user `var_vsphere_iso_ds`}} {{user `var_iso_path`}}/{{user `var_iso_file`}}",
-                                    "[] /vmimages/tools-isoimages/windows.iso"
-            ],
-            "shutdown_command":     "shutdown /s /t 10 /f /d p:4:1 /c Packer_Provisioning_Shutdown",
-            "floppy_files": [
-                                    "./config/STANDARDCORE/Autounattend.xml",
+                                    "./config/Autounattend.xml",
                                     "./scripts/00-vmtools64.cmd",
                                     "./scripts/01-initialise.ps1"
             ]
@@ -149,7 +99,7 @@
     "post-processors": [
         {
             "type":                 "manifest",
-            "output":               "win2019-output.json",
+            "output":               "output.json",
             "strip_path":           false
         }
     ]
